@@ -1,0 +1,16 @@
+{
+  "name": "Chef Godwin Foods and Kitchen Uganda",
+  "short_name": "Chef Godwin",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#351b0e",
+  "theme_color": "#b8501b",
+  "description": "Professional catering and cooking school in Kampala",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

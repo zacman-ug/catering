@@ -1,0 +1,31 @@
+{
+  "name": "chef-godwin-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Website for Chef Godwin Foods and Kitchen Uganda — catering & cooking school",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:client": "npm run dev --workspace=client",
+    "dev:server": "npm run dev --workspace=server",
+    "build": "npm run build --workspace=client && npm run build --workspace=server",
+    "start": "npm run start --workspace=server",
+    "db:migrate": "npm run db:migrate --workspace=server",
+    "db:migrate:dev": "npm run db:migrate:dev --workspace=server",
+    "db:generate": "npm run db:generate --workspace=server",
+    "db:gallery:prepare": "npm run db:gallery:prepare --workspace=server",
+    "db:gallery:sync": "npm run db:gallery:sync --workspace=server",
+    "db:seed": "npm run db:seed --workspace=server",
+    "db:setup": "npm run db:migrate && npm run db:seed && npm run db:gallery:sync",
+    "test": "npm run test --workspace=server && npm run test --workspace=client"
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

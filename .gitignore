@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test / coverage
+coverage/
+
+# Uploads (keep folder, ignore files)
+server/uploads/*
+!server/uploads/.gitkeep
+
+# PostgreSQL data (if using local volume)
+postgres-data/

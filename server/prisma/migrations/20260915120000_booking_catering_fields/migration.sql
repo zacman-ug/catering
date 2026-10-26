@@ -1,0 +1,4 @@
+ALTER TABLE bookings
+  ADD COLUMN IF NOT EXISTS service_style VARCHAR(50),
+  ADD COLUMN IF NOT EXISTS dietary_requirements TEXT,
+  ADD COLUMN IF NOT EXISTS budget_range VARCHAR(50);

@@ -1,0 +1,215 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email        String   @unique @db.VarChar(255)
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  fullName     String   @map("full_name") @db.VarChar(255)
+  role         String   @default("admin") @db.VarChar(50)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@map("users")
+}
+
+model Service {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String   @db.VarChar(255)
+  slug        String   @unique @db.VarChar(255)
+  description String
+  icon        String?  @db.VarChar(100)
+  features    Json?    @default("[]")
+  sortOrder   Int      @default(0) @map("sort_order")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@index([isActive], map: "idx_services_active")
+  @@map("services")
+}
+
+model Course {
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String       @db.VarChar(255)
+  slug        String       @unique @db.VarChar(255)
+  description String
+  duration    String?      @db.VarChar(100)
+  level       String?      @default("beginner") @db.VarChar(50)
+  priceUgx    Int?         @map("price_ugx")
+  maxStudents Int?         @default(20) @map("max_students")
+  startDate   DateTime?    @map("start_date") @db.Date
+  imageUrl    String?      @map("image_url") @db.VarChar(500)
+  isActive    Boolean      @default(true) @map("is_active")
+  createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime     @default(now()) @map("updated_at") @db.Timestamptz(6)
+  enrollments Enrollment[]
+
+  @@index([isActive], map: "idx_courses_active")
+  @@map("courses")
+}
+
+model Gallery {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title     String   @db.VarChar(255)
+  caption   String?
+  imageUrl  String   @map("image_url") @db.VarChar(500)
+  category  String?  @default("events") @db.VarChar(100)
+  sortOrder Int      @default(0) @map("sort_order")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([category], map: "idx_gallery_category")
+  @@map("gallery")
+}
+
+model Testimonial {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clientName  String   @map("client_name") @db.VarChar(255)
+  eventType   String?  @map("event_type") @db.VarChar(100)
+  content     String
+  rating      Int?
+  isFeatured  Boolean  @default(false) @map("is_featured")
+  source      String?  @db.VarChar(100)
+  externalUrl String?  @map("external_url") @db.VarChar(500)
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("testimonials")
+}
+
+model Booking {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fullName   String   @map("full_name") @db.VarChar(255)
+  email      String?  @db.VarChar(255)
+  phone      String   @db.VarChar(50)
+  eventType  String   @map("event_type") @db.VarChar(100)
+  eventDate  DateTime? @map("event_date") @db.Date
+  guestCount Int?     @map("guest_count")
+  venue      String?  @db.VarChar(500)
+  message    String?
+  serviceStyle String? @map("service_style") @db.VarChar(50)
+  dietaryRequirements String? @map("dietary_requirements") @db.Text
+  budgetRange String? @map("budget_range") @db.VarChar(50)
+  staffCount Int? @map("staff_count")
+  quotedAmountUgx Int? @map("quoted_amount_ugx")
+  depositAmountUgx Int? @map("deposit_amount_ugx")
+  depositStatus String? @default("none") @map("deposit_status") @db.VarChar(50)
+  invoiceStatus String? @default("pending") @map("invoice_status") @db.VarChar(50)
+  status     String   @default("pending") @db.VarChar(50)
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@index([status], map: "idx_bookings_status")
+  @@index([eventDate], map: "idx_bookings_event_date")
+  @@map("bookings")
+}
+
+model Enrollment {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fullName  String    @map("full_name") @db.VarChar(255)
+  email     String?   @db.VarChar(255)
+  phone     String    @db.VarChar(50)
+  courseId  String?   @map("course_id") @db.Uuid
+  message   String?
+  status    String    @default("pending") @db.VarChar(50)
+  paymentStatus String? @default("unpaid") @map("payment_status") @db.VarChar(50)
+  amountPaidUgx Int? @default(0) @map("amount_paid_ugx")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime  @default(now()) @map("updated_at") @db.Timestamptz(6)
+  course    Course?   @relation(fields: [courseId], references: [id], onDelete: SetNull)
+
+  @@index([status], map: "idx_enrollments_status")
+  @@map("enrollments")
+}
+
+model MenuPackage {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  eventType     String   @map("event_type") @db.VarChar(100)
+  title         String   @db.VarChar(255)
+  slug          String   @unique @db.VarChar(255)
+  description   String
+  sampleDishes  Json     @default("[]") @map("sample_dishes")
+  priceMinUgx   Int?     @map("price_min_ugx")
+  priceMaxUgx   Int?     @map("price_max_ugx")
+  sortOrder     Int      @default(0) @map("sort_order")
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@index([isActive], map: "idx_menu_packages_active")
+  @@map("menu_packages")
+}
+
+model BlogPost {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title         String    @db.VarChar(255)
+  slug          String    @unique @db.VarChar(255)
+  excerpt       String?
+  content       String
+  coverImageUrl String?   @map("cover_image_url") @db.VarChar(500)
+  isPublished   Boolean   @default(false) @map("is_published")
+  publishedAt   DateTime? @map("published_at") @db.Timestamptz(6)
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime  @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@index([isPublished, publishedAt], map: "idx_blog_posts_published")
+  @@map("blog_posts")
+}
+
+model CaseStudy {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title           String   @db.VarChar(255)
+  slug            String   @unique @db.VarChar(255)
+  eventType       String?  @map("event_type") @db.VarChar(100)
+  guestCount      Int?     @map("guest_count")
+  location        String?  @db.VarChar(255)
+  summary         String
+  content         String?
+  beforeImageUrl  String?  @map("before_image_url") @db.VarChar(500)
+  afterImageUrl   String?  @map("after_image_url") @db.VarChar(500)
+  isFeatured      Boolean  @default(false) @map("is_featured")
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@index([isFeatured], map: "idx_case_studies_featured")
+  @@map("case_studies")
+}
+
+model EventChecklistItem {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  category       String   @db.VarChar(100)
+  item           String
+  clientProvides Boolean  @default(true) @map("client_provides")
+  sortOrder      Int      @default(0) @map("sort_order")
+  isActive       Boolean  @default(true) @map("is_active")
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("event_checklist_items")
+}
+
+model ContactMessage {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fullName  String   @map("full_name") @db.VarChar(255)
+  email     String?  @db.VarChar(255)
+  phone     String?  @db.VarChar(50)
+  subject   String?  @db.VarChar(255)
+  message   String
+  isRead    Boolean  @default(false) @map("is_read")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("contact_messages")
+}
+
+model SiteSetting {
+  key       String   @id @db.VarChar(100)
+  value     Json
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@map("site_settings")
+}
