@@ -40,6 +40,7 @@ export default function SeoHead({ title, description, path = '/' }) {
       '@context': 'https://schema.org',
       '@type': 'FoodEstablishment',
       name: business.name,
+      ...(business.owner ? { founder: { '@type': 'Person', name: business.owner } } : {}),
       address: business.address,
       telephone: business.phones?.[0],
       url: origin,

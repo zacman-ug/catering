@@ -18,7 +18,7 @@ export default function SchoolPage() {
     <>
       <Hero
         title="Godwin Cooking School"
-        subtitle="Hands-on culinary training from Chef Godwin Kasozi. Learn professional techniques, food safety, and large-scale catering skills."
+        subtitle="Hands-on culinary training from Chef Godwin Marvin. Learn professional techniques, food safety, and large-scale catering skills."
         ctaLabel="Enroll Now"
         ctaLink="/school#enroll-form"
       />

@@ -1,6 +1,6 @@
 # Chef Godwin Foods & Kitchen Uganda
 
-Full-stack website for **Chef Godwin Kasozi** — event catering and the Godwin Cooking School, based in Kampala, Uganda.
+Full-stack website for **Chef Godwin Marvin** — event catering and the Godwin Cooking School, based in Kampala, Uganda.
 
 ## Tech Stack
 
@@ -109,7 +109,7 @@ Uses Node.js built-in `node:test` (no extra test dependencies).
 | Field    | Value |
 | -------- | ----- |
 | Business | Chef Godwin Foods and Kitchen Uganda |
-| Owner    | Godwin Kasozi (Chef Godwin) |
+| Owner    | Chef Godwin Marvin |
 | Address  | God With Us Plaza, Kampala, Uganda |
 | Phone    | +256 754 845 995 / +256 771 343 592 |
 | Services | Event catering, cooking school, recipe content |

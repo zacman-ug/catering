@@ -1,7 +1,7 @@
 export const BUSINESS = {
   name: 'Chef Godwin Foods and Kitchen Uganda',
   shortName: 'Chef Godwin',
-  owner: 'Godwin Kasozi',
+  owner: 'Chef Godwin Marvin',
   tagline: 'Professional outside catering & culinary training in Kampala',
   address: 'God With Us Plaza, Kampala, Uganda',
   phones: ['+256754845995', '+256771343592'],
